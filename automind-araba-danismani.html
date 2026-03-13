@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoMind — Akıllı Araç Danışmanı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0f;
+    --bg2: #141418;
+    --bg3: #1c1c22;
+    --bg4: #242430;
+    --accent: #e8442a;
+    --accent2: #f4a024;
+    --text: #f0ede8;
+    --text2: #9a9690;
+    --text3: #5a5855;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --sport: #e8442a;
+    --off: #4a9e5c;
+    --ev: #3a82d4;
+    --luxury: #c49a3c;
+    --family: #9b6ec8;
+    --budget: #4aada8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(12,12,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 40px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,68,42,0.15) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 0.5px solid rgba(232,68,42,0.3);
+    padding: 6px 16px;
+    border-radius: 40px;
+    margin-bottom: 2rem;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h1.hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    color: var(--text);
+    animation: fadeDown 0.8s 0.1s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1.hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    max-width: 520px;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.7;
+    margin: 1.5rem auto 2.5rem;
+    animation: fadeDown 0.8s 0.2s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeDown 0.8s 0.3s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 40px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-secondary {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 40px;
+    background: transparent;
+    color: var(--text);
+    border: 0.5px solid var(--border2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { background: var(--bg3); transform: translateY(-1px); }
+
+  /* CATEGORIES */
+  #kategoriler {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 3rem;
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .cat-card {
+    position: relative;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 20px;
+  }
+
+  .cat-card:hover { transform: translateY(-4px); border-color: var(--border2); }
+  .cat-card:hover::before { opacity: 1; }
+
+  .cat-card.sport::before { background: radial-gradient(circle at 30% 30%, rgba(232,68,42,0.12), transparent 60%); }
+  .cat-card.off::before { background: radial-gradient(circle at 30% 30%, rgba(74,158,92,0.12), transparent 60%); }
+  .cat-card.ev::before { background: radial-gradient(circle at 30% 30%, rgba(58,130,212,0.12), transparent 60%); }
+  .cat-card.luxury::before { background: radial-gradient(circle at 30% 30%, rgba(196,154,60,0.12), transparent 60%); }
+  .cat-card.family::before { background: radial-gradient(circle at 30% 30%, rgba(155,110,200,0.12), transparent 60%); }
+  .cat-card.budget::before { background: radial-gradient(circle at 30% 30%, rgba(74,173,168,0.12), transparent 60%); }
+
+  .cat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cat-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cat-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cat-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 40px;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sport .cat-tag { background: rgba(232,68,42,0.15); color: #e8442a; }
+  .off .cat-tag { background: rgba(74,158,92,0.15); color: #4a9e5c; }
+  .ev .cat-tag { background: rgba(58,130,212,0.15); color: #3a82d4; }
+  .luxury .cat-tag { background: rgba(196,154,60,0.15); color: #c49a3c; }
+  .family .cat-tag { background: rgba(155,110,200,0.15); color: #9b6ec8; }
+  .budget .cat-tag { background: rgba(74,173,168,0.15); color: #4aada8; }
+
+  /* CHAT SECTION */
+  #danisma {
+    padding: 4rem 2rem 6rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  #chat-wrapper {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  #chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg3);
+  }
+
+  .chat-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #f4a024);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .chat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .chat-status {
+    font-size: 12px;
+    color: #4a9e5c;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .chat-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4a9e5c;
+    animation: pulse 2s infinite;
+  }
+
+  #chat-messages {
+    min-height: 420px;
+    max-height: 520px;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+  }
+
+  #chat-messages::-webkit-scrollbar { width: 4px; }
+  #chat-messages::-webkit-scrollbar-track { background: transparent; }
+  #chat-messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  .msg {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-av {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .msg-av.bot { background: linear-gradient(135deg, var(--accent), #f4a024); }
+  .msg-av.user { background: var(--bg4); color: var(--text2); font-size: 11px; }
+
+  .bubble {
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text);
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+  }
+
+  .msg.user .bubble {
+    background: var(--bg4);
+    border-color: var(--border2);
+    color: var(--text);
+  }
+
+  .bubble p { margin-bottom: 6px; }
+  .bubble p:last-child { margin-bottom: 0; }
+  .bubble strong { color: var(--accent2); font-weight: 500; }
+  .bubble ul { padding-left: 1.2rem; }
+  .bubble li { margin-bottom: 4px; }
+
+  .car-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .car-card-chat {
+    background: var(--bg4);
+    border: 0.5px solid var(--border2);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+
+  .car-card-chat .cname {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .car-card-chat .cdesc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  .car-card-chat .ctags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+
+  .ctag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .ctag.sport { background: rgba(232,68,42,0.15); color: #e8442a; }
+  .ctag.off { background: rgba(74,158,92,0.15); color: #4a9e5c; }
+  .ctag.ev { background: rgba(58,130,212,0.15); color: #3a82d4; }
+  .ctag.luxury { background: rgba(196,154,60,0.15); color: #c49a3c; }
+  .ctag.family { background: rgba(155,110,200,0.15); color: #9b6ec8; }
+  .ctag.budget { background: rgba(74,173,168,0.15); color: #4aada8; }
+
+  .opts-area {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .opt-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border2);
+    background: var(--bg3);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .opt-btn:hover { background: var(--bg4); color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  #input-area {
+    display: flex;
+    gap: 8px;
+    padding: 1rem 1.5rem;
+    border-top: 0.5px solid var(--border);
+    background: var(--bg3);
+  }
+
+  #msg-input {
+    flex: 1;
+    background: var(--bg4);
+    border: 0.5px solid var(--border2);
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #msg-input:focus { border-color: rgba(255,255,255,0.25); }
+  #msg-input::placeholder { color: var(--text3); }
+
+  #send-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+
+  #send-btn:hover { opacity: 0.85; }
+  #send-btn:active { transform: scale(0.95); }
+
+  #send-btn svg { width: 16px; height: 16px; fill: white; }
+
+  .typing-indicator {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 0 1.5rem 0.5rem;
+    font-size: 12px;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  .typing-dots { display: flex; gap: 3px; }
+  .typing-dots span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text3);
+    animation: bounce 1.2s infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+  /* FEATURES */
+  #ozellikler {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 3rem;
+  }
+
+  .feat-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .feat-card:hover { border-color: var(--border2); }
+
+  .feat-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .feat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .feat-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text2);
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  footer p {
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #kategoriler, #danisma, #ozellikler { padding: 4rem 1.2rem; }
+    footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>Auto</span>Mind</a>
+  <ul class="nav-links">
+    <li><a href="#kategoriler">Kategoriler</a></li>
+    <li><a href="#danisma">Danışman</a></li>
+    <li><a href="#ozellikler">Özellikler</a></li>
+  </ul>
+  <a href="#danisma" class="nav-cta">Danışmana Sor</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">Yapay Zeka Destekli</div>
+  <h1 class="hero-title">Hayalindeki<br><em>Arabayı</em><br>Bul</h1>
+  <p class="hero-sub">6 kategori, yüzlerce model. Akıllı danışmanımız soru sorarak senin için en iyi aracı buluyor.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('danisma').scrollIntoView({behavior:'smooth'})">Danışmana Başla</button>
+    <button class="btn-secondary" onclick="document.getElementById('kategoriler').scrollIntoView({behavior:'smooth'})">Kategorileri Keşfet</button>
+  </div>
+</section>
+
+<!-- KATEGORİLER -->
+<section id="kategoriler">
+  <div class="section-label">Ne Arıyorsun?</div>
+  <h2 class="section-title">6 Ana Kategori</h2>
+  <div class="cat-grid">
+    <a class="cat-card sport" href="#danisma" onclick="setCategory('Spor araba bakıyorum, seçenekleri görmek istiyorum')">
+      <span class="cat-icon">🏎️</span>
+      <div class="cat-name">Spor Arabalar</div>
+      <div class="cat-desc">Porsche 911, BMW M4, Lotus Emeya. Pist performansı veya şehir şıklığı.</div>
+      <span class="cat-tag">RWD · AWD · Track</span>
+    </a>
+    <a class="cat-card off" href="#danisma" onclick="setCategory('Arazi ve off-road araç istiyorum')">
+      <span class="cat-icon">🏔️</span>
+      <div class="cat-name">Arazi & SUV</div>
+      <div class="cat-desc">Land Rover Defender, Ford Bronco. Gerçek arazi veya konforlu aile SUV'u.</div>
+      <span class="cat-tag">4x4 · Mud · Snow</span>
+    </a>
+    <a class="cat-card ev" href="#danisma" onclick="setCategory('Elektrikli veya hibrit araç düşünüyorum')">
+      <span class="cat-icon">⚡</span>
+      <div class="cat-name">Elektrikli & Hibrit</div>
+      <div class="cat-desc">Tesla, Lucid Air, Rivian. Geleceğin teknolojisi, bugünün performansı.</div>
+      <span class="cat-tag">EV · Hybrid · Regen</span>
+    </a>
+    <a class="cat-card luxury" href="#danisma" onclick="setCategory('Lüks ve prestij araç arıyorum')">
+      <span class="cat-icon">💎</span>
+      <div class="cat-name">Lüks & Prestij</div>
+      <div class="cat-desc">Rolls-Royce, Bentley, Mercedes S-Class. Kusursuz konfor ve prestij.</div>
+      <span class="cat-tag">Premium · Bespoke</span>
+    </a>
+    <a class="cat-card family" href="#danisma" onclick="setCategory('Aile arabası arıyorum, geniş ve güvenli olsun')">
+      <span class="cat-icon">👨‍👩‍👧‍👦</span>
+      <div class="cat-name">Aile Araçları</div>
+      <div class="cat-desc">Volvo XC90, VW Touareg, Toyota Highlander. Güvenlik ve bagaj hacmi öncelikli.</div>
+      <span class="cat-tag">Safe · Spacious · Smart</span>
+    </a>
+    <a class="cat-card budget" href="#danisma" onclick="setCategory('Bütçe dostu uygun fiyatlı araç arıyorum')">
+      <span class="cat-icon">💰</span>
+      <div class="cat-name">Bütçe Dostu</div>
+      <div class="cat-desc">Toyota Corolla, Honda Civic, Dacia Duster. En iyi değer/performans dengesi.</div>
+      <span class="cat-tag">Value · Reliable · Economy</span>
+    </a>
+  </div>
+</section>
+
+<!-- DANIŞMAN -->
+<section id="danisma">
+  <div class="section-label">Akıllı Danışman</div>
+  <h2 class="section-title">Sana Özel<br>Araç Bul</h2>
+  <div id="chat-wrapper">
+    <div id="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div>
+        <div class="chat-title">AutoMind Danışmanı</div>
+        <div class="chat-status">Çevrimiçi</div>
+      </div>
+    </div>
+    <div id="chat-messages"></div>
+    <div class="typing-indicator" id="typing">
+      <div class="typing-dots"><span></span><span></span><span></span></div>
+      Danışman yazıyor...
+    </div>
+    <div class="opts-area" id="opts"></div>
+    <div id="input-area">
+      <input id="msg-input" placeholder="Araç tipini veya bütçenizi yazın..." />
+      <button id="send-btn" onclick="send()">
+        <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ÖZELLİKLER -->
+<section id="ozellikler">
+  <div class="section-label">Neden AutoMind?</div>
+  <h2 class="section-title">Akıllı Özellikleri<br>Keşfet</h2>
+  <div class="features-grid">
+    <div class="feat-card">
+      <span class="feat-icon">🧠</span>
+      <div class="feat-title">Kişiselleştirilmiş Öneriler</div>
+      <div class="feat-desc">Sürüş alışkanlıklarınızı, bütçenizi ve yaşam tarzınızı analiz ederek en uygun modeli bulur.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🔍</span>
+      <div class="feat-title">Teknik Karşılaştırma</div>
+      <div class="feat-desc">Motor gücü, tork, menzil, bagaj hacmi, güvenlik puanları — tüm detaylar tek yerde.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">⚡</span>
+      <div class="feat-title">EV Uzmanlığı</div>
+      <div class="feat-desc">Batarya kapasitesi, şarj hızı, gerçek menzil ve otonom sürüş seviyeleri hakkında derinlemesine bilgi.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🏁</span>
+      <div class="feat-title">Pist & Performans</div>
+      <div class="feat-desc">0-100 süreleri, nürburgring rekoru, aerodinamik paketler. Performans tutkunları için özel analiz.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🌍</span>
+      <div class="feat-title">2024-2026 Modeller</div>
+      <div class="feat-desc">En güncel model yılları, facelift değişiklikler ve yeni nesil platformlar hakkında bilgi.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">💬</span>
+      <div class="feat-title">Sohbet Tabanlı</div>
+      <div class="feat-desc">Form doldurmak yok. Sohbet ederek istediğinizi anlatın, danışman size uygun aracı bulsun.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>Auto</span>Mind</div>
+  <p>© 2025 AutoMind — Yapay Zeka Destekli Araç Danışmanı</p>
+  <p>Tüm model bilgileri referans amaçlıdır.</p>
+</footer>
+
+<script>
+const SYSTEM = `Sen AutoMind — premium bir otomotiv danışmanısın. Türkçe konuş. Samimi, bilgili ve tutkulu bir uzman gibi cevap ver. Cevaplarını kısa ve öz tut (3-5 cümle + araç önerileri).
+
+KATEGORILER VE KURALLAR:
+
+1. SPOR ARABA:
+   - Mutlaka sor: "Arkadan itişli bir sürüş keyfi mi arıyorsunuz, yoksa dört çeker bir güvenlik mi?"
+   - Mutlaka sor: "Pist performansı mı önemli yoksa şehir içi dikkat çekmek mi?"
+   - Cevaplara göre öner: Porsche 911 GT3, BMW M4 Competition, Lotus Emira, Lotus Emeya, Ferrari Roma, Lamborghini Huracán
+
+2. ARAZİ / SUV / OFF-ROAD:
+   - Yaklaşma-uzaklaşma açıları, şasi yapısı, çamur/kar modlarını açıkla.
+   - Sor: "Gerçek arazi deneyimi mi (Land Rover Defender, Ford Bronco, Toyota GR Prado) yoksa konforlu aile SUV'u mu (Volvo XC90, Range Rover, Porsche Cayenne)?"
+
+3. ELEKTRİKLİ & HİBRİT:
+   - Batarya kapasitesi, WLTP menzili, DC şarj hızı ve rejeneratif frenleme avantajlarını anlat.
+   - Öner: Tesla Model S Plaid, Lucid Air Grand Touring, Rivian R1S, Porsche Taycan Turbo GT, Mercedes EQS, BMW iX
+
+4. LÜX & PRESTİJ:
+   - El işçiliği, bespoke konfigürasyon, aktif süspansiyon teknolojileri hakkında konuş.
+   - Sor: "Sürücü odaklı mı yoksa arka koltuk konforu mu?" 
+   - Öner: Rolls-Royce Ghost, Bentley Continental GT, Mercedes S580, Aston Martin DB12, Maserati Quattroporte
+
+5. AİLE ARAÇLARI:
+   - Euro NCAP puanları, ADAS sistemleri, bagaj hacmi ve üçüncü koltuk imkânını öne çıkar.
+   - Sor: "Kaç kişilik aile? 5 mi 7 koltuk mu?"
+   - Öner: Volvo XC90, Toyota Highlander, VW Touareg, Kia Telluride, BMW X5, Peugeot 5008
+
+6. BÜTÇE DOSTU:
+   - Yakıt ekonomisi, sigorta maliyeti, bakım periyotları ve ikinci el değer kaybını vurgula.
+   - Sor: "Bütçeniz ne kadar? Sıfır mı, ikinci el mi?"
+   - Öner: Toyota Corolla Cross, Honda Civic, Dacia Duster, Skoda Octavia, Hyundai Tucson, Renault Megane E-Tech
+
+ARAÇ ÖNERİSİ FORMATI: Her araç önerisini şu JSON içinde ver (düz metin içine göm):
+<cars>[{"name":"Model Adı 2025","tags":["sport"],"desc":"Tek satır çarpıcı özellik açıklaması"}]</cars>
+
+Tag seçenekleri: sport, off, ev, luxury, family, budget
+
+Birden fazla araç önerirken tüm araçları tek <cars> bloğuna koy.`;
+
+let history = [];
+const chatEl = document.getElementById('chat-messages');
+const optsEl = document.getElementById('opts');
+const inputEl = document.getElementById('msg-input');
+const typingEl = document.getElementById('typing');
+
+function addMsg(role, htmlContent, cars) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role;
+  const av = document.createElement('div');
+  av.className = 'msg-av ' + role;
+  av.textContent = role === 'bot' ? '✦' : 'SİZ';
+  const bub = document.createElement('div');
+  bub.className = 'bubble';
+  bub.innerHTML = htmlContent;
+  if (cars && cars.length) {
+    const carsDiv = document.createElement('div');
+    carsDiv.className = 'car-cards';
+    cars.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'car-card-chat';
+      const tags = (c.tags || []).map(t => {
+        const labels = {sport:'Spor',off:'Arazi',ev:'Elektrikli',luxury:'Lüks',family:'Aile',budget:'Ekonomik'};
+        return `<span class="ctag ${t}">${labels[t]||t}</span>`;
+      }).join('');
+      card.innerHTML = `<div class="cname">${c.name}</div><div class="cdesc">${c.desc}</div><div class="ctags">${tags}</div>`;
+      carsDiv.appendChild(card);
+    });
+    bub.appendChild(carsDiv);
+  }
+  wrap.appendChild(av);
+  wrap.appendChild(bub);
+  chatEl.appendChild(wrap);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function setOpts(options) {
+  optsEl.innerHTML = '';
+  options.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = o;
+    b.onclick = () => { inputEl.value = o; send(); };
+    optsEl.appendChild(b);
+  });
+}
+
+function detectCategory(text) {
+  const t = text.toLowerCase();
+  if (t.includes('spor') || t.includes('porsche') || t.includes('bmw m') || t.includes('ferrari') || t.includes('pist')) return 'sport';
+  if (t.includes('arazi') || t.includes('suv') || t.includes('off') || t.includes('dağ') || t.includes('defender') || t.includes('bronco')) return 'off';
+  if (t.includes('elektrik') || t.includes('hibrit') || t.includes('tesla') || t.includes('ev') || t.includes('şarj')) return 'ev';
+  if (t.includes('lüks') || t.includes('prestij') || t.includes('rolls') || t.includes('bentley') || t.includes('aston')) return 'luxury';
+  if (t.includes('aile') || t.includes('çocuk') || t.includes('geniş') || t.includes('güvenli')) return 'family';
+  if (t.includes('bütçe') || t.includes('ekonomik') || t.includes('uygun') || t.includes('ucuz') || t.includes('fiyat')) return 'budget';
+  return null;
+}
+
+function getContextOpts(category, msgText) {
+  const t = (msgText || '').toLowerCase();
+  const maps = {
+    sport: [
+      ['Arkadan itişli tercih ederim', 'Dört çeker güvenli olsun', 'Pist performansı istiyorum', 'Şehir içi şıklık'],
+      ['500+ BG istiyorum', 'Kabriolet olsun', 'Günlük kullanım önemli', 'Tam track car']
+    ],
+    off: [
+      ['Gerçek arazi için', 'Aile konforu önceliğim', 'Hem arazi hem konfor', 'Şehirde de kullanacağım'],
+      ['Çamur ve dağ yolu', 'Kar ve buz yolu', 'Hafta sonu macera', '7 kişilik olsun']
+    ],
+    ev: [
+      ['Menzil önceliğim', 'Hızlı şarj önemli', 'Otonom sürüş istiyorum', 'Performans EV'],
+      ['500km+ menzil istiyorum', 'Evde şarj yeterli', 'Tesla mi başka marka mı?', 'Fiyat/performans']
+    ],
+    luxury: [
+      ['Sürücü odaklı olsun', 'Arka koltuk konforu', 'El yapımı bespoke', 'Spor lüks'],
+      ['Sedan mi SUV mi?', 'Sessizlik önceliğim', 'En son teknoloji', 'Klasik tasarım']
+    ],
+    family: [
+      ['5 kişilik aile', '7 koltuk istiyorum', 'Okul için günlük', 'Yolculuklar için'],
+      ['Euro NCAP 5 yıldız', 'Büyük bagaj hacmi', 'Hibrit olsun', 'Bütçem var']
+    ],
+    budget: [
+      ['Sıfır araç istiyorum', 'İkinci el bakarım', 'Yakıt ekonomisi', 'Düşük bakım maliyeti'],
+      ['300-500k bütçem var', '500-800k bütçem var', 'Sigorta ucuz olsun', 'Uzun vadeli güvenilir']
+    ]
+  };
+  const opts = maps[category] || [['Spor araba', 'Arazi aracı', 'Elektrikli', 'Lüks', 'Aile', 'Bütçe dostu']];
+  return opts[Math.floor(Math.random() * opts.length)];
+}
+
+async function send() {
+  const msg = inputEl.value.trim();
+  if (!msg) return;
+  inputEl.value = '';
+  optsEl.innerHTML = '';
+  addMsg('user', msg);
+  history.push({ role: 'user', content: msg });
+  typingEl.style.display = 'flex';
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM,
+        messages: history
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.map(i => i.text || '').join('');
+    history.push({ role: 'assistant', content: raw });
+
+    let cars = [];
+    const carMatch = raw.match(/<cars>([\s\S]*?)<\/cars>/);
+    let text = raw.replace(/<cars>[\s\S]*?<\/cars>/g, '').trim();
+    if (carMatch) {
+      try { cars = JSON.parse(carMatch[1].trim()); } catch (e) {}
+    }
+
+    const html = marked.parse(text);
+    typingEl.style.display = 'none';
+    addMsg('bot', html, cars);
+
+    const allText = msg + ' ' + text;
+    const cat = detectCategory(allText);
+    setOpts(getContextOpts(cat, allText));
+
+  } catch (e) {
+    typingEl.style.display = 'none';
+    addMsg('bot', '<p>Bağlantı hatası oluştu. Lütfen tekrar deneyin.</p>');
+  }
+}
+
+function setCategory(msg) {
+  setTimeout(() => {
+    inputEl.value = msg;
+    send();
+  }, 300);
+}
+
+inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+
+// Welcome message
+setTimeout(() => {
+  addMsg('bot', '<p>Merhaba! Ben <strong>AutoMind</strong> — akıllı araç danışmanınız. 🏎️</p><p>Hangi kategoride araç arıyorsunuz? Sohbet ederek size en uygun modeli bulalım.</p>');
+  setOpts(['Spor araba bakıyorum', 'Arazi / SUV istiyorum', 'Elektrikli araç düşünüyorum', 'Lüks araç arıyorum', 'Aile arabası lazım', 'Bütçe dostu olsun']);
+}, 500);
+</script>
+</body>
+</html>
