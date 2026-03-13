@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YuvaHane — Ev İlan Platformu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf9f6;
+  --white:#ffffff;
+  --dark:#1a1a2e;
+  --darker:#0f0f1a;
+  --card:#ffffff;
+  --border:#e8e4dc;
+  --border2:#d4cfc6;
+  --text:#1a1a2e;
+  --muted:#7a7669;
+  --light:#f0ede6;
+  --accent:#c17f3e;
+  --accent2:#e8a05a;
+  --accent-bg:#fdf3e7;
+  --green:#2d7a4f;
+  --green-bg:#e8f5ee;
+  --red:#c0392b;
+  --red-bg:#fdecea;
+  --blue:#2563eb;
+  --blue-bg:#eff6ff;
+  --shadow:0 2px 12px rgba(26,26,46,0.08);
+  --shadow-lg:0 8px 40px rgba(26,26,46,0.12);
+  --radius:14px;
+  --radius-lg:20px;
+  --font-display:'Playfair Display',serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;overflow-x:hidden}
+
+/* ── HEADER ── */
+header{background:rgba(250,249,246,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:0 2rem}
+.nav{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px;gap:1.5rem}
+.logo{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--dark);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-icon{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;letter-spacing:.2px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.nav-notif{position:relative;cursor:pointer;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s}
+.nav-notif:hover{border-color:var(--border2)}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg)}
+.btn{font-family:var(--font-body);font-size:13px;font-weight:600;padding:9px 20px;border-radius:var(--radius);cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-outline{background:transparent;border:1.5px solid var(--border2);color:var(--muted)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#256041}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#a93226}
+
+/* ── HERO ── */
+.hero{max-width:1320px;margin:0 auto;padding:64px 2rem 48px;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-left{}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-bg);border:1px solid rgba(193,127,62,.25);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-family:var(--font-display);font-size:clamp(38px,5vw,62px);font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:20px;color:var(--dark)}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:16px;color:var(--muted);max-width:440px;margin-bottom:36px;font-weight:300;line-height:1.75}
+.hero-stats{display:flex;gap:32px;padding-top:24px;border-top:1px solid var(--border)}
+.hero-stat strong{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--dark);display:block}
+.hero-stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.hero-right{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:28px;box-shadow:var(--shadow-lg)}
+.search-title{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:20px;color:var(--dark)}
+.search-tabs{display:flex;gap:4px;background:var(--light);border-radius:10px;padding:4px;margin-bottom:20px}
+.search-tab{flex:1;padding:8px;text-align:center;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;background:transparent;color:var(--muted)}
+.search-tab.active{background:var(--white);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.search-field{margin-bottom:14px}
+.search-label{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.search-input,.search-select{width:100%;padding:10px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.search-input:focus,.search-select:focus{border-color:var(--accent)}
+.search-select option{background:white}
+.search-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.oda-chips{display:flex;gap:6px;flex-wrap:wrap}
+.oda-chip{padding:7px 13px;border-radius:8px;border:1.5px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted)}
+.oda-chip:hover{border-color:var(--accent);color:var(--accent)}
+.oda-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.search-btn{width:100%;margin-top:16px;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font-display);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.2px}
+.search-btn:hover{background:var(--accent2)}
+
+/* ── SECTION ── */
+.section{max-width:1320px;margin:0 auto;padding:0 2rem 60px}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.section-hdr h2{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.5px;color:var(--dark)}
+.section-hdr .count{font-size:13px;color:var(--muted)}
+
+/* ── FILTERS BAR ── */
+.filters-bar{max-width:1320px;margin:0 auto;padding:0 2rem 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fchip{padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--white);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:var(--muted)}
+.fchip:hover{border-color:var(--border2);color:var(--text)}
+.fchip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.fchip-label{font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-right:4px}
+
+/* ── LAYOUT ── */
+.layout{max-width:1320px;margin:0 auto;padding:0 2rem 80px;display:grid;grid-template-columns:272px 1fr;gap:28px}
+.sidebar{position:sticky;top:82px;height:fit-content}
+.scard{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.stitle{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.sinput,.sselect{width:100%;padding:9px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:13px;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:8px}
+.sinput:focus,.sselect:focus{border-color:var(--accent)}
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk{display:flex;align-items:center;gap:9px;padding:5px 0;cursor:pointer}
+.chk input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer}
+.chk-label{font-size:13px;color:var(--muted);flex:1}
+.chk-n{font-size:11px;color:var(--muted);background:var(--light);padding:2px 7px;border-radius:100px}
+.apply-btn{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font-body);font-size:13px;font-weight:700;cursor:pointer;transition:background .2s}
+.apply-btn:hover{background:var(--accent2)}
+.reset-btn{width:100%;padding:9px;background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:var(--radius);font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;transition:all .2s}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* ── CARDS ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.25,.46,.45,.94);box-shadow:var(--shadow)}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.card-img{height:190px;background:linear-gradient(135deg,#e8e4dc,#d4cfc6);display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;overflow:hidden}
+.card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.15) 100%)}
+.cbadge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:4px 10px;border-radius:6px;z-index:2}
+.cbadge-new{background:var(--accent);color:#fff}
+.cbadge-urgent{background:var(--red);color:#fff}
+.cbadge-featured{background:var(--dark);color:#fff}
+.cfav{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;font-size:15px;transition:all .2s}
+.cfav:hover{background:var(--white);transform:scale(1.1)}
+.cfav.faved{color:var(--red)}
+.card-body{padding:16px 18px 18px}
+.c-type{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.c-title{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:8px;line-height:1.25;color:var(--dark)}
+.c-specs{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.cspec{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.c-div{height:1px;background:var(--border);margin-bottom:12px}
+.c-footer{display:flex;align-items:flex-end;justify-content:space-between}
+.c-price{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--dark)}
+.c-price small{font-size:11px;font-weight:400;font-family:var(--font-body);color:var(--muted);display:block;margin-bottom:1px}
+.c-loc{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:3px;max-width:120px;text-align:right;line-height:1.3}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:36px}
+.pBtn{width:38px;height:38px;border-radius:9px;border:1.5px solid var(--border);background:var(--white);color:var(--muted);font-family:var(--font-display);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.pBtn:hover{border-color:var(--accent);color:var(--accent)}
+.pBtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:36px 2rem;background:var(--white)}
+.footer-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.footer-links{display:flex;gap:20px;list-style:none}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-copy{font-size:12px;color:var(--muted)}
+
+/* ── OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,10,20,.55);z-index:300;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:var(--radius-lg);max-width:740px;width:100%;max-height:92vh;overflow-y:auto;position:relative;box-shadow:var(--shadow-lg)}
+.mclose{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:var(--light);border:none;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);z-index:10;transition:all .2s;line-height:1}
+.mclose:hover{background:var(--border);color:var(--text)}
+
+/* ── DETAIL MODAL ── */
+.det-img{height:260px;background:linear-gradient(135deg,#e8e4dc,#ccc);display:flex;align-items:center;justify-content:center;font-size:88px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;position:relative}
+.det-sold-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-lg) var(--radius-lg) 0 0;font-family:var(--font-display);font-size:28px;font-weight:800;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.det-body{padding:24px 28px 28px}
+.det-meta{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.det-type{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.det-title{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.3px;color:var(--dark)}
+.det-loc{font-size:13px;color:var(--muted);margin-top:3px}
+.det-price-box{text-align:right;flex-shrink:0}
+.det-price{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--accent)}
+.det-price small{font-size:12px;color:var(--muted);font-weight:400;font-family:var(--font-body);display:block}
+.det-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.dspec{background:var(--light);border-radius:10px;padding:12px;text-align:center}
+.dspec-val{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--dark);display:block}
+.dspec-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;display:block}
+.det-desc{font-size:14px;color:var(--muted);line-height:1.75;background:var(--bg);border-radius:10px;padding:14px;margin-bottom:20px;border:1px solid var(--border)}
+.det-features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.feat-tag{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text);font-weight:500}
+.det-seller{display:flex;align-items:center;gap:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:20px}
+.seller-av{width:48px;height:48px;border-radius:50%;background:var(--accent-bg);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.seller-info strong{font-size:14px;font-weight:700;color:var(--dark);display:block}
+.seller-info span{font-size:12px;color:var(--muted)}
+.seller-rating{margin-left:auto;text-align:center}
+.seller-rating strong{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--dark);display:block}
+.seller-rating span{font-size:11px;color:var(--muted)}
+.det-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── BUY MODAL ── */
+.buy-body{padding:28px}
+.buy-title{font-family:var(--font-display);font-size:22px;font-weight:800;margin-bottom:6px}
+.buy-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.buy-steps{display:flex;gap:0;margin-bottom:28px;background:var(--light);border-radius:10px;overflow:hidden}
+.buy-step{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;cursor:default}
+.buy-step.active{background:var(--accent);color:#fff}
+.buy-step.done{background:var(--green-bg);color:var(--green)}
+.buy-panel{display:none}
+.buy-panel.active{display:block}
+.buy-summary{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px;display:flex;gap:14px;align-items:center}
+.buy-sum-img{font-size:36px;background:var(--light);width:60px;height:60px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.buy-sum-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--dark)}
+.buy-sum-price{font-size:18px;font-weight:700;color:var(--accent);margin-top:2px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.fi{width:100%;padding:10px 13px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--accent)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.payment-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.pay-opt{border:2px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.pay-opt:hover{border-color:var(--border2)}
+.pay-opt.selected{border-color:var(--accent);background:var(--accent-bg)}
+.pay-opt-icon{font-size:24px;margin-bottom:6px}
+.pay-opt-label{font-size:13px;font-weight:600;color:var(--text)}
+.pay-opt-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.success-box{text-align:center;padding:20px 0}
+.success-icon{font-size:56px;margin-bottom:16px}
+.success-title{font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--green);margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:320px;margin:0 auto 24px}
+.buy-nav{display:flex;gap:10px;justify-content:flex-end;padding-top:16px;border-top:1px solid var(--border)}
+
+/* ── CHAT MODAL ── */
+.chat-modal{max-width:480px}
+.chat-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.chat-av{width:42px;height:42px;border-radius:50%;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid var(--accent);flex-shrink:0}
+.chat-hinfo strong{font-size:14px;font-weight:700;display:block;color:var(--dark)}
+.chat-hinfo span{font-size:12px;color:var(--green);display:flex;align-items:center;gap:4px}
+.chat-online-dot{width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block}
+.chat-prop{font-size:11px;color:var(--muted);padding:8px 16px;background:var(--light);margin:0;text-align:center;font-style:italic}
+.chat-msgs{height:300px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg{display:flex;flex-direction:column;max-width:78%}
+.msg.me{align-self:flex-end;align-items:flex-end}
+.msg.them{align-self:flex-start;align-items:flex-start}
+.msg-bubble{padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5}
+.msg.me .msg-bubble{background:var(--accent);color:#fff;border-radius:14px 14px 2px 14px}
+.msg.them .msg-bubble{background:var(--white);border:1px solid var(--border);color:var(--text);border-radius:14px 14px 14px 2px}
+.msg-time{font-size:10px;color:var(--muted);margin-top:3px;padding:0 4px}
+.chat-suggestions{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;border-top:1px solid var(--border);background:var(--white)}
+.chat-suggestions::-webkit-scrollbar{display:none}
+.sug-btn{flex-shrink:0;padding:6px 12px;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-size:12px;font-weight:500;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all .2s;font-family:var(--font-body)}
+.sug-btn:hover{border-color:var(--accent);color:var(--accent)}
+.chat-input-row{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);background:var(--white)}
+.chat-input{flex:1;padding:10px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:100px;font-family:var(--font-body);font-size:13px;color:var(--text);outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--accent)}
+.chat-send{width:38px;height:38px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.chat-send:hover{background:var(--accent2)}
+
+/* ── ADD LISTING MODAL ── */
+.add-body{padding:28px}
+.add-title{font-family:var(--font-display);font-size:22px;font-weight:800;margin-bottom:4px}
+.add-sub{font-size:13px;color:var(--muted);margin-bottom:22px}
+.fs{width:100%;padding:10px 13px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.fs:focus{border-color:var(--accent)}
+.fs option{background:white}
+.fta{resize:vertical;min-height:80px}
+.oda-pick{display:flex;gap:6px;flex-wrap:wrap}
+.oda-pick button{padding:7px 13px;border-radius:8px;border:1.5px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted);font-family:var(--font-body)}
+.oda-pick button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s}
+.upload-area:hover{border-color:var(--accent)}
+.upload-icon{font-size:28px;margin-bottom:8px}
+.upload-text{font-size:13px;color:var(--muted)}
+.add-footer{display:flex;gap:10px;justify-content:flex-end;padding-top:16px;border-top:1px solid var(--border);margin-top:4px}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp .4s ease both}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.1s}
+.card:nth-child(4){animation-delay:.15s}
+.card:nth-child(5){animation-delay:.2s}
+.card:nth-child(6){animation-delay:.25s}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--dark);color:#fff;padding:12px 20px;border-radius:var(--radius);font-size:13px;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;max-width:300px;display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ── EMPTY ── */
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-text{font-size:15px}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;gap:2rem}
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .det-specs{grid-template-columns:repeat(2,1fr)}
+  .det-actions{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+@media(max-width:640px){
+  .hero{padding:40px 1.5rem 32px}
+  .hero h1{font-size:36px}
+  .section,.layout,.filters-bar{padding-left:1.5rem;padding-right:1.5rem}
+  .det-actions{grid-template-columns:1fr}
+  .buy-steps .buy-step{font-size:10px;padding:8px 4px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <nav class="nav">
+    <a class="logo" href="#">
+      <span class="logo-icon">🏠</span>YuvaHane
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">İlanlar</a></li>
+      <li><a href="#">Kiralık</a></li>
+      <li><a href="#">Satılık</a></li>
+      <li><a href="#">Değerleme</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-notif" onclick="showToast('📬 3 yeni mesajınız var')">
+        🔔<span class="notif-dot"></span>
+      </div>
+      <button class="btn btn-outline" onclick="openAddListing()">+ İlan Ver</button>
+      <button class="btn btn-primary">Giriş Yap</button>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">🏡 Türkiye'nin En Güvenilir Emlak Platformu</div>
+    <h1>Yeni yuvanı<br><em>biz buluruz</em></h1>
+    <p class="hero-sub">Hayalindeki evi bulmak artık çok kolay. Binlerce ilan, gerçek fiyatlar, güvenli alım-satım.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>48.200+</strong><span>Aktif İlan</span></div>
+      <div class="hero-stat"><strong>12.800+</strong><span>Başarılı Satış</span></div>
+      <div class="hero-stat"><strong>4.8★</strong><span>Kullanıcı Puanı</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="search-title">Ev Ara</div>
+    <div class="search-tabs">
+      <button class="search-tab active" onclick="setTab(this,'Satılık')">Satılık</button>
+      <button class="search-tab" onclick="setTab(this,'Kiralık')">Kiralık</button>
+      <button class="search-tab" onclick="setTab(this,'Devren')">Devren</button>
+    </div>
+    <div class="search-field">
+      <span class="search-label">Şehir / İlçe</span>
+      <input class="search-input" type="text" placeholder="İstanbul, Kadıköy..." id="heroSearch">
+    </div>
+    <div class="search-row">
+      <div class="search-field">
+        <span class="search-label">Min Fiyat</span>
+        <input class="search-input" type="text" placeholder="1.500.000 ₺" id="heroMin">
+      </div>
+      <div class="search-field">
+        <span class="search-label">Max Fiyat</span>
+        <input class="search-input" type="text" placeholder="5.000.000 ₺" id="heroMax">
+      </div>
+    </div>
+    <div class="search-field">
+      <span class="search-label">Oda Sayısı</span>
+      <div class="oda-chips" id="heroOdaChips">
+        <button class="oda-chip active" onclick="setOda(this,'')">Tümü</button>
+        <button class="oda-chip" onclick="setOda(this,'1+0')">1+0</button>
+        <button class="oda-chip" onclick="setOda(this,'1+1')">1+1</button>
+        <button class="oda-chip" onclick="setOda(this,'2+1')">2+1</button>
+        <button class="oda-chip" onclick="setOda(this,'3+1')">3+1</button>
+        <button class="oda-chip" onclick="setOda(this,'4+1')">4+1</button>
+        <button class="oda-chip" onclick="setOda(this,'5+1')">5+1</button>
+      </div>
+    </div>
+    <button class="search-btn" onclick="doHeroSearch()">🔍 Ara</button>
+  </div>
+</section>
+
+<!-- FILTERS BAR -->
+<div class="filters-bar">
+  <span class="fchip-label">Filtrele:</span>
+  <button class="fchip active" onclick="setFilter(this,'')">Tümü</button>
+  <button class="fchip" onclick="setFilter(this,'Satılık')">Satılık</button>
+  <button class="fchip" onclick="setFilter(this,'Kiralık')">Kiralık</button>
+  <button class="fchip" onclick="setFilter(this,'Daire')">Daire</button>
+  <button class="fchip" onclick="setFilter(this,'Villa')">Villa</button>
+  <button class="fchip" onclick="setFilter(this,'Müstakil')">Müstakil</button>
+  <button class="fchip" onclick="setFilter(this,'yeni')">Yeni İlanlar</button>
+  <button class="fchip" onclick="setFilter(this,'ucuz')">3M Altı</button>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="scard">
+      <div class="stitle">Fiyat (₺)</div>
+      <div class="srow">
+        <input class="sinput" type="text" placeholder="Min" id="sMin">
+        <input class="sinput" type="text" placeholder="Max" id="sMax">
+      </div>
+    </div>
+    <div class="scard">
+      <div class="stitle">Oda Sayısı</div>
+      <div id="sOdaChips" style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="oda-chip active" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'')">Tümü</button>
+        <button class="oda-chip" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'1+0')">1+0</button>
+        <button class="oda-chip" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'1+1')">1+1</button>
+        <button class="oda-chip" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'2+1')">2+1</button>
+        <button class="oda-chip" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'3+1')">3+1</button>
+        <button class="oda-chip" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'4+1')">4+1</button>
+        <button class="oda-chip" style="font-size:11px;padding:5px 10px" onclick="setSOda(this,'5+1')">5+1</button>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="stitle">Metrekare (m²)</div>
+      <div class="srow">
+        <input class="sinput" type="text" placeholder="Min" id="sM2Min">
+        <input class="sinput" type="text" placeholder="Max" id="sM2Max">
+      </div>
+    </div>
+    <div class="scard">
+      <div class="stitle">Bina Yaşı</div>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Sıfır</span><span class="chk-n">47</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">1–5 Yıl</span><span class="chk-n">112</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">6–10 Yıl</span><span class="chk-n">98</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">11–20 Yıl</span><span class="chk-n">134</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">20+ Yıl</span><span class="chk-n">89</span></label>
+    </div>
+    <div class="scard">
+      <div class="stitle">Özellikler</div>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Ebeveyn Banyosu</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Otopark</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Balkon</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Asansör</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Güvenlik</span></label>
+      <label class="chk"><input type="checkbox"><span class="chk-label">Havuz</span></label>
+    </div>
+    <button class="apply-btn" onclick="doFilter()">Filtreyi Uygula</button>
+    <button class="reset-btn" onclick="resetFilters()">Sıfırla</button>
+  </aside>
+
+  <!-- LISTINGS -->
+  <main>
+    <div class="section-hdr">
+      <h2>İlanlar</h2>
+      <span class="count" id="listCount">8 ilan gösteriliyor</span>
+    </div>
+    <div class="grid" id="mainGrid"></div>
+    <div class="pagination">
+      <button class="pBtn">‹</button>
+      <button class="pBtn active">1</button>
+      <button class="pBtn">2</button>
+      <button class="pBtn">3</button>
+      <button class="pBtn">…</button>
+      <button class="pBtn">18</button>
+      <button class="pBtn">›</button>
+    </div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a class="logo" href="#"><span class="logo-icon">🏠</span>YuvaHane</a>
+    <ul class="footer-links">
+      <li><a href="#">Hakkımızda</a></li>
+      <li><a href="#">Kullanım Koşulları</a></li>
+      <li><a href="#">Gizlilik</a></li>
+      <li><a href="#">Destek</a></li>
+      <li><a href="#">Kariyer</a></li>
+    </ul>
+    <p class="footer-copy">© 2024 YuvaHane. Tüm hakları saklıdır.</p>
+  </div>
+</footer>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="detOvl" onclick="closeOvl('detOvl',event)">
+  <div class="modal" id="detModal">
+    <button class="mclose" onclick="closeModal('detOvl')">×</button>
+    <div class="det-img" id="dImg"></div>
+    <div class="det-body">
+      <div class="det-meta">
+        <div>
+          <div class="det-type" id="dType"></div>
+          <div class="det-title" id="dTitle"></div>
+          <div class="det-loc" id="dLoc"></div>
+        </div>
+        <div class="det-price-box">
+          <div class="det-price" id="dPrice"></div>
+          <small id="dPriceSub" style="font-size:12px;color:var(--muted);font-family:var(--font-body)"></small>
+        </div>
+      </div>
+      <div class="det-specs" id="dSpecs"></div>
+      <div class="det-desc" id="dDesc"></div>
+      <div class="det-features" id="dFeats"></div>
+      <div class="det-seller" id="dSeller"></div>
+      <div class="det-actions" id="dActions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUY MODAL -->
+<div class="overlay" id="buyOvl" onclick="closeOvl('buyOvl',event)">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal('buyOvl')">×</button>
+    <div class="buy-body">
+      <div class="buy-title">Satın Alma</div>
+      <div class="buy-sub" id="buySubtitle">İşlemi güvenle tamamlayın</div>
+      <div class="buy-steps">
+        <div class="buy-step active" id="bStep1">1. Bilgiler</div>
+        <div class="buy-step" id="bStep2">2. Ödeme</div>
+        <div class="buy-step" id="bStep3">3. Onay</div>
+      </div>
+
+      <!-- PANEL 1 -->
+      <div class="buy-panel active" id="bPanel1">
+        <div class="buy-summary" id="buySummary"></div>
+        <div class="fgrid">
+          <div class="fg"><label class="fl">Ad Soyad</label><input class="fi" type="text" placeholder="Ahmet Yılmaz" id="bName"></div>
+          <div class="fg"><label class="fl">TC Kimlik No</label><input class="fi" type="text" placeholder="12345678901" id="bTC"></div>
+        </div>
+        <div class="fg"><label class="fl">E-posta</label><input class="fi" type="email" placeholder="ornek@mail.com" id="bEmail"></div>
+        <div class="fg"><label class="fl">Telefon</label><input class="fi" type="tel" placeholder="+90 555 000 00 00" id="bPhone"></div>
+        <div class="fg"><label class="fl">Adres</label><input class="fi" type="text" placeholder="Teslimat / İletişim Adresi" id="bAddr"></div>
+        <div class="buy-nav">
+          <button class="btn btn-outline" onclick="closeModal('buyOvl')">İptal</button>
+          <button class="btn btn-primary" onclick="buyNext(2)">Devam Et →</button>
+        </div>
+      </div>
+
+      <!-- PANEL 2 -->
+      <div class="buy-panel" id="bPanel2">
+        <div class="buy-summary" id="buySummary2"></div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:14px;font-weight:600">Ödeme Yöntemi Seçin</p>
+        <div class="payment-opts">
+          <div class="pay-opt selected" onclick="selectPay(this,'kredi')">
+            <div class="pay-opt-icon">💳</div>
+            <div class="pay-opt-label">Kredi Kartı</div>
+            <div class="pay-opt-sub">Taksit imkânı</div>
+          </div>
+          <div class="pay-opt" onclick="selectPay(this,'havale')">
+            <div class="pay-opt-icon">🏦</div>
+            <div class="pay-opt-label">Havale / EFT</div>
+            <div class="pay-opt-sub">Anında transfer</div>
+          </div>
+          <div class="pay-opt" onclick="selectPay(this,'pei')">
+            <div class="pay-opt-icon">📱</div>
+            <div class="pay-opt-label">Papara / Mobil</div>
+            <div class="pay-opt-sub">Hızlı ödeme</div>
+          </div>
+          <div class="pay-opt" onclick="selectPay(this,'konut')">
+            <div class="pay-opt-icon">🏠</div>
+            <div class="pay-opt-label">Konut Kredisi</div>
+            <div class="pay-opt-sub">Banka onaylı</div>
+          </div>
+        </div>
+        <div id="payFields">
+          <div class="fg"><label class="fl">Kart Numarası</label><input class="fi" type="text" placeholder="0000 0000 0000 0000" id="bCard"></div>
+          <div class="fgrid">
+            <div class="fg"><label class="fl">Son Kullanma</label><input class="fi" type="text" placeholder="MM/YY" id="bExp"></div>
+            <div class="fg"><label class="fl">CVV</label><input class="fi" type="text" placeholder="123" id="bCvv"></div>
+          </div>
+        </div>
+        <div class="buy-nav">
+          <button class="btn btn-outline" onclick="buyNext(1)">← Geri</button>
+          <button class="btn btn-primary" onclick="buyNext(3)">Ödemeyi Tamamla ✓</button>
+        </div>
+      </div>
+
+      <!-- PANEL 3 -->
+      <div class="buy-panel" id="bPanel3">
+        <div class="success-box">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">Tebrikler!</div>
+          <p class="success-sub">Satın alma işleminiz başarıyla tamamlandı. Ev sahibi kısa süre içinde sizinle iletişime geçecektir. Sözleşme e-posta adresinize gönderildi.</p>
+          <div style="background:var(--green-bg);border:1px solid rgba(45,122,79,.2);border-radius:var(--radius);padding:14px;margin-bottom:20px">
+            <p style="font-size:13px;color:var(--green);font-weight:600;text-align:center">✅ İşlem No: #YH-<span id="txnId"></span></p>
+          </div>
+          <button class="btn btn-success" onclick="closeModal('buyOvl')" style="margin:0 auto">Tamam, Harika!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT MODAL -->
+<div class="overlay" id="chatOvl" onclick="closeOvl('chatOvl',event)">
+  <div class="modal chat-modal">
+    <button class="mclose" onclick="closeModal('chatOvl')">×</button>
+    <div class="chat-header">
+      <div class="chat-av" id="chatAv">👤</div>
+      <div class="chat-hinfo">
+        <strong id="chatName">Ev Sahibi</strong>
+        <span><span class="chat-online-dot"></span> Çevrimiçi</span>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div style="font-size:11px;color:var(--muted)">Yanıt süresi</div>
+        <div style="font-size:12px;font-weight:600;color:var(--green)">~5 dakika</div>
+      </div>
+    </div>
+    <div class="chat-prop" id="chatProp"></div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-suggestions" id="chatSugs"></div>
+    <div class="chat-input-row">
+      <input class="chat-input" type="text" placeholder="Mesaj yaz..." id="chatInput" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="chat-send" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD LISTING MODAL -->
+<div class="overlay" id="addOvl" onclick="closeOvl('addOvl',event)">
+  <div class="modal" style="max-width:600px">
+    <button class="mclose" onclick="closeModal('addOvl')">×</button>
+    <div class="add-body">
+      <div class="add-title">İlan Ver</div>
+      <div class="add-sub">Birkaç adımda ücretsiz ilan verin, binlerce kişiye ulaşın.</div>
+      <div class="fg">
+        <label class="fl">İlan Başlığı</label>
+        <input class="fs" type="text" placeholder="Örn: Kadıköy'de Geniş 3+1 Daire" id="aTitle">
+      </div>
+      <div class="fgrid">
+        <div class="fg">
+          <label class="fl">İlan Tipi</label>
+          <select class="fs" id="aTip"><option>Satılık</option><option>Kiralık</option><option>Devren</option></select>
+        </div>
+        <div class="fg">
+          <label class="fl">Emlak Tipi</label>
+          <select class="fs" id="aEmlak"><option>Daire</option><option>Villa</option><option>Müstakil</option><option>Residence</option><option>Stüdyo</option></select>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">Oda Sayısı</label>
+        <div class="oda-pick" id="addOdaPick">
+          <button onclick="pickOda(this,'1+0')">1+0</button>
+          <button onclick="pickOda(this,'1+1')">1+1</button>
+          <button class="active" onclick="pickOda(this,'2+1')">2+1</button>
+          <button onclick="pickOda(this,'3+1')">3+1</button>
+          <button onclick="pickOda(this,'4+1')">4+1</button>
+          <button onclick="pickOda(this,'5+1')">5+1</button>
+        </div>
+      </div>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Metrekare (m²)</label><input class="fs" type="number" placeholder="120" id="aM2"></div>
+        <div class="fg"><label class="fl">Kat</label><input class="fs" type="text" placeholder="3/8" id="aKat"></div>
+      </div>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Şehir</label>
+          <select class="fs" id="aSehir"><option>İstanbul</option><option>Ankara</option><option>İzmir</option><option>Bursa</option><option>Antalya</option><option>Trabzon</option></select>
+        </div>
+        <div class="fg"><label class="fl">İlçe</label><input class="fs" type="text" placeholder="Kadıköy" id="aIlce"></div>
+      </div>
+      <div class="fg"><label class="fl">Fiyat (₺)</label><input class="fs" type="text" placeholder="3.500.000" id="aFiyat"></div>
+      <div class="fg"><label class="fl">Açıklama</label><textarea class="fs fta" placeholder="Evinizi tanıtın..." id="aDesc"></textarea></div>
+      <div class="fg">
+        <label class="fl">Fotoğraf Yükle</label>
+        <div class="upload-area" onclick="showToast('📷 Dosya yükleme özelliği yakında!')">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Tıkla veya sürükle bırak · Max 10 fotoğraf</div>
+        </div>
+      </div>
+      <div class="add-footer">
+        <button class="btn btn-outline" onclick="closeModal('addOvl')">İptal</button>
+        <button class="btn btn-primary" onclick="submitListing()">İlanı Yayınla ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+const ICONS = ['🏠','🏡','🏢','🏗️','🏛️','🏘️','🛖','🏚️'];
+
+let listings = [
+  {id:1,title:'Kadıköy Merkez 3+1 Geniş Daire',type:'Satılık',emlak:'Daire',oda:'3+1',m2:140,kat:'4/8',sehir:'İstanbul',ilce:'Kadıköy',fiyat:4850000,badge:'Öne Çıkan',icon:'🏢',
+   desc:'Kadıköy meydanına 5 dakika yürüme mesafesinde, yüksek tavanlı, ebeveyn banyolu, 3 balkonlu, doğalgaz merkezi ısıtmalı tam konfor daire. Kombi 2 yıllık, asansör, kapalı otopark mevcut.',
+   feats:['Ebeveyn Banyosu','3 Balkon','Kapalı Otopark','Asansör','Kombi','Depreme Dayanıklı'],
+   seller:{name:'Mehmet Kaya',rating:'4.9',reviews:47,icon:'👨'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhaba! İlanımla ilgilendiğiniz için teşekkürler 🙂'}]},
+
+  {id:2,title:'Çankaya\'da 2+1 Modern Residence',type:'Satılık',emlak:'Residence',oda:'2+1',m2:95,kat:'12/20',sehir:'Ankara',ilce:'Çankaya',fiyat:2750000,badge:'Yeni',icon:'🏗️',
+   desc:'Site içinde 7/24 güvenlikli, havuzlu, spor salonlu prestij rezidans. Sıfır bina, akıllı ev sistemleri, yerden ısıtma. Metro durağına 3 dakika.',
+   feats:['Havuz','Spor Salonu','7/24 Güvenlik','Yerden Isıtma','Akıllı Ev','Sıfır Bina'],
+   seller:{name:'Zeynep Arslan',rating:'4.7',reviews:23,icon:'👩'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhaba, nasıl yardımcı olabilirim?'}]},
+
+  {id:3,title:'Bostanlı\'da Deniz Manzaralı 4+1',type:'Satılık',emlak:'Daire',oda:'4+1',m2:185,kat:'6/7',sehir:'İzmir',ilce:'Karşıyaka',fiyat:7200000,badge:'',icon:'🏠',
+   desc:'Denize 50 metre, tam cephe Ege manzarası, panoramik balkon. Saten mutfak dolapları, amerikan mutfak, jakuzi banyolu eşsiz daire. Tapu temiz.',
+   feats:['Deniz Manzarası','Jakuzi','Amerikan Mutfak','Panoramik Balkon','Tapu Temiz','Sosyal Tesis'],
+   seller:{name:'Can Demir',rating:'5.0',reviews:61,icon:'👨'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhaba! Deniz manzaralı dairemizi sizinle paylaşmaktan mutluluk duyarım 🌊'}]},
+
+  {id:4,title:'Nilüfer\'de 1+1 Kiralık Stüdyo',type:'Kiralık',emlak:'Stüdyo',oda:'1+1',m2:55,kat:'2/5',sehir:'Bursa',ilce:'Nilüfer',fiyat:18000,badge:'Yeni',icon:'🏡',
+   desc:'Öğrencilere ve çalışanlara uygun, tam eşyalı, internet dahil. Üniversiteye 10 dakika. Tüm ihtiyaçlar karşılanmış, temiz ve bakımlı.',
+   feats:['Tam Eşyalı','İnternet Dahil','Beyaz Eşya','Isıtma Dahil','Güvenlik Kamerası'],
+   seller:{name:'Fatma Şahin',rating:'4.6',reviews:18,icon:'👩'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhabalar! Daire hâlâ müsait, görmek ister misiniz?'}]},
+
+  {id:5,title:'Lara\'da Yüzme Havuzlu Villa',type:'Satılık',emlak:'Villa',oda:'5+1',m2:380,kat:'Müstakil',sehir:'Antalya',ilce:'Lara',fiyat:15500000,badge:'Öne Çıkan',icon:'🏛️',
+   desc:'Özel yüzme havuzlu, geniş bahçeli, 3 banyolu, yazlık-kışlık lüks villa. Güneş enerjisi sistemi, akıllı ev otomasyon sistemi, kapalı garaj 3 araç kapasiteli.',
+   feats:['Özel Havuz','Geniş Bahçe','3 Banyo','Güneş Enerjisi','3 Araçlık Garaj','Akıllı Ev'],
+   seller:{name:'Burak Yılmaz',rating:'4.8',reviews:34,icon:'👨'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhaba! Villayı gezebilirsiniz, müsait günlerinizi belirtin 🏠'}]},
+
+  {id:6,title:'Beşiktaş\'ta 1+0 Satılık Stüdyo',type:'Satılık',emlak:'Stüdyo',oda:'1+0',m2:42,kat:'3/6',sehir:'İstanbul',ilce:'Beşiktaş',fiyat:2100000,badge:'',icon:'🏘️',
+   desc:'Beşiktaş çarşısına 3 dakika, metro yürüme mesafesinde. Tadilatlı, ebeveyn banyolu, yüksek tavan. Kiracı çıkışı temmuz ayı, boş devir.',
+   feats:['Tadilatlı','Merkezi Konum','Metro Yakın','Yüksek Tavan','Boş Devir'],
+   seller:{name:'Ayşe Çelik',rating:'4.5',reviews:12,icon:'👩'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhaba! Stüdyo hakkında sorularınızı yanıtlamaktan memnuniyet duyarım.'}]},
+
+  {id:7,title:'Muratpaşa\'da 3+1 Kiralık Daire',type:'Kiralık',emlak:'Daire',oda:'3+1',m2:130,kat:'5/10',sehir:'Antalya',ilce:'Muratpaşa',fiyat:32000,badge:'',icon:'🏢',
+   desc:'Şehir merkezine 10 dakika, alışveriş merkezine yürüme mesafesinde. Eşyasız, temiz, bakımlı. Yönetim masrafları ayrı, depozito 2 kira.',
+   feats:['Eşyasız','Balkon','Asansör','Otopark','AVM Yakın','Soba Mevcut'],
+   seller:{name:'Hasan Öztürk',rating:'4.4',reviews:9,icon:'👨'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'İyi günler! Dairemiz ile ilgili her soruyu yanıtlayabilirim.'}]},
+
+  {id:8,title:'Trabzon\'da Deniz Manzaralı 2+1',type:'Satılık',emlak:'Daire',oda:'2+1',m2:100,kat:'7/12',sehir:'Trabzon',ilce:'Ortahisar',fiyat:3200000,badge:'Yeni',icon:'🏠',
+   desc:'Karadeniz\'e karşı cephe, muhteşem şehir ve deniz manzarası. Sıfır bina, ikiz villa projesi içinde. Çay bahçesi manzaralı terası ile eşsiz bir yaşam sunar.',
+   feats:['Deniz Manzarası','Sıfır Bina','Teras','Çay Bahçesi Manzarası','Güvenlik'],
+   seller:{name:'Elif Karadeniz',rating:'4.9',reviews:28,icon:'👩'},soldStatus:false,
+   chatMsgs:[{who:'them',text:'Merhaba! Trabzon\'dan arayanlara mutlu mesajlar veriyoruz 🌿'}]}
+];
+
+// ── STATE ──
+let activeFilter = '';
+let activeOda = '';
+let sOda = '';
+let activePay = 'kredi';
+let currentDetIdx = -1;
+
+// ── RENDER ──
+function formatPrice(p,type){
+  if(type==='Kiralık') return p.toLocaleString('tr-TR') + ' ₺/ay';
+  return p.toLocaleString('tr-TR') + ' ₺';
+}
+
+function renderGrid(list){
+  const g = document.getElementById('mainGrid');
+  document.getElementById('listCount').textContent = list.length + ' ilan gösteriliyor';
+  g.innerHTML = '';
+  if(!list.length){
+    g.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">Aramanızla eşleşen ilan bulunamadı.</div></div>';
+    return;
+  }
+  list.forEach((h,i)=>{
+    const badgeHtml = h.badge ? `<div class="cbadge ${h.badge==='Yeni'?'cbadge-new':h.badge==='Öne Çıkan'?'cbadge-featured':'cbadge-urgent'}">${h.badge}</div>` : '';
+    const soldHtml = h.soldStatus ? '<div class="det-sold-overlay">SATILDI</div>' : '';
+    const idx = listings.indexOf(h);
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.animationDelay = (i*0.055)+'s';
+    div.innerHTML = `
+      <div class="card-img" style="position:relative">
+        <span style="position:relative;z-index:1">${h.icon}</span>
+        ${badgeHtml}
+        ${soldHtml}
+        <button class="cfav ${favs.has(h.id)?'faved':''}" onclick="event.stopPropagation();toggleFav(this,${h.id})">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="c-type">${h.emlak} · ${h.type}</div>
+        <div class="c-title">${h.title}</div>
+        <div class="c-specs">
+          <span class="cspec">🛏 ${h.oda}</span>
+          <span class="cspec">📐 ${h.m2} m²</span>
+          <span class="cspec">🏗 ${h.kat}. Kat</span>
+        </div>
+        <div class="c-div"></div>
+        <div class="c-footer">
+          <div class="c-price"><small>${h.type}</small>${formatPrice(h.fiyat,h.type)}</div>
+          <div class="c-loc">📍 ${h.ilce}, ${h.sehir}</div>
+        </div>
+      </div>`;
+    div.onclick = ()=>openDetail(idx);
+    g.appendChild(div);
+  });
+}
+
+let favs = new Set();
+function toggleFav(btn,id){
+  if(favs.has(id)){favs.delete(id);btn.classList.remove('faved');showToast('💔 İlanı favorilerden kaldırdınız');}
+  else{favs.add(id);btn.classList.add('faved');showToast('❤️ İlan favorilere eklendi!');}
+}
+
+// ── FILTER ──
+function doFilter(){
+  const sMin = parseInt(document.getElementById('sMin').value.replace(/\D/g,''))||0;
+  const sMax = parseInt(document.getElementById('sMax').value.replace(/\D/g,''))||Infinity;
+  const m2Min = parseInt(document.getElementById('sM2Min').value)||0;
+  const m2Max = parseInt(document.getElementById('sM2Max').value)||Infinity;
+  let list = listings.filter(h=>{
+    let ok = h.fiyat>=sMin && h.fiyat<=sMax && h.m2>=m2Min && h.m2<=m2Max;
+    if(activeFilter==='Satılık') ok = ok && h.type==='Satılık';
+    else if(activeFilter==='Kiralık') ok = ok && h.type==='Kiralık';
+    else if(activeFilter==='Daire') ok = ok && h.emlak==='Daire';
+    else if(activeFilter==='Villa') ok = ok && h.emlak==='Villa';
+    else if(activeFilter==='Müstakil') ok = ok && h.emlak==='Müstakil';
+    else if(activeFilter==='yeni') ok = ok && h.badge==='Yeni';
+    else if(activeFilter==='ucuz') ok = ok && h.fiyat<3000000;
+    if(sOda) ok = ok && h.oda===sOda;
+    return ok;
+  });
+  renderGrid(list);
+}
+
+function setFilter(el,val){
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter=val;
+  doFilter();
+}
+
+function resetFilters(){
+  document.getElementById('sMin').value='';
+  document.getElementById('sMax').value='';
+  document.getElementById('sM2Min').value='';
+  document.getElementById('sM2Max').value='';
+  document.querySelectorAll('#sOdaChips .oda-chip').forEach((b,i)=>{b.classList.toggle('active',i===0)});
+  sOda='';
+  activeFilter='';
+  document.querySelectorAll('.fchip').forEach((c,i)=>{c.classList.toggle('active',i===0)});
+  renderGrid(listings);
+  showToast('🔄 Filtreler sıfırlandı');
+}
+
+function setSOda(el,val){
+  document.querySelectorAll('#sOdaChips .oda-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  sOda=val;
+}
+
+// ── HERO SEARCH ──
+let heroOdaVal = '';
+function setOda(el,val){
+  document.querySelectorAll('#heroOdaChips .oda-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  heroOdaVal=val;
+}
+
+function setTab(el,val){
+  document.querySelectorAll('.search-tab').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function doHeroSearch(){
+  const q = document.getElementById('heroSearch').value.toLowerCase();
+  let list = listings.filter(h=>{
+    let ok = true;
+    if(q) ok = (h.title+h.sehir+h.ilce).toLowerCase().includes(q);
+    if(heroOdaVal) ok = ok && h.oda===heroOdaVal;
+    return ok;
+  });
+  renderGrid(list);
+  window.scrollTo({top:document.querySelector('.filters-bar').offsetTop-80,behavior:'smooth'});
+}
+
+// ── DETAIL ──
+function openDetail(idx){
+  const h = listings[idx];
+  currentDetIdx = idx;
+  const img = document.getElementById('dImg');
+  img.innerHTML = h.icon + (h.soldStatus?'<div class="det-sold-overlay">SATILDI</div>':'');
+  document.getElementById('dType').textContent = h.emlak + ' · ' + h.type;
+  document.getElementById('dTitle').textContent = h.title;
+  document.getElementById('dLoc').textContent = '📍 ' + h.ilce + ', ' + h.sehir;
+  document.getElementById('dPrice').textContent = formatPrice(h.fiyat, h.type);
+  document.getElementById('dPriceSub').textContent = h.type==='Kiralık'?'Aylık kira':'Satış fiyatı';
+  document.getElementById('dSpecs').innerHTML = `
+    <div class="dspec"><span class="dspec-val">${h.oda}</span><span class="dspec-lbl">Oda</span></div>
+    <div class="dspec"><span class="dspec-val">${h.m2} m²</span><span class="dspec-lbl">Alan</span></div>
+    <div class="dspec"><span class="dspec-val">${h.kat}</span><span class="dspec-lbl">Kat</span></div>
+    <div class="dspec"><span class="dspec-val">${h.emlak}</span><span class="dspec-lbl">Tip</span></div>`;
+  document.getElementById('dDesc').textContent = h.desc;
+  document.getElementById('dFeats').innerHTML = h.feats.map(f=>`<span class="feat-tag">✓ ${f}</span>`).join('');
+  document.getElementById('dSeller').innerHTML = `
+    <div class="seller-av">${h.seller.icon}</div>
+    <div class="seller-info"><strong>${h.seller.name}</strong><span>Ev Sahibi · ${h.seller.reviews} ilan</span></div>
+    <div class="seller-rating"><strong>${h.seller.rating}★</strong><span>Puan</span></div>`;
+
+  if(h.soldStatus){
+    document.getElementById('dActions').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:12px;background:var(--red-bg);border-radius:var(--radius);color:var(--red);font-weight:700;font-size:14px">✗ Bu ilan satılmıştır</div>`;
+  } else {
+    document.getElementById('dActions').innerHTML = `
+      <button class="btn btn-primary" onclick="openBuy(${idx})">🛒 ${h.type==='Kiralık'?'Kira Anlaşması':'Satın Al'}</button>
+      <button class="btn btn-outline" onclick="openChat(${idx})">💬 Mesaj Gönder</button>
+      <button class="btn btn-outline" onclick="showToast('📞 +90 555 ${100+idx*17} 00 00')">📞 Ara</button>`;
+  }
+  document.getElementById('detOvl').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+// ── BUY ──
+let buyIdx = -1;
+function openBuy(idx){
+  buyIdx = idx;
+  const h = listings[idx];
+  closeModal('detOvl');
+  setTimeout(()=>{
+    document.getElementById('buySummary').innerHTML = document.getElementById('buySummary2').innerHTML =
+      `<div class="buy-sum-img">${h.icon}</div><div><div class="buy-sum-title">${h.title}</div><div class="buy-sum-price">${formatPrice(h.fiyat,h.type)}</div></div>`;
+    buyNext(1);
+    document.getElementById('buyOvl').classList.add('open');
+    document.body.style.overflow='hidden';
+  },200);
+}
+
+function buyNext(step){
+  [1,2,3].forEach(s=>{
+    document.getElementById('bPanel'+s).classList.toggle('active',s===step);
+    const el = document.getElementById('bStep'+s);
+    el.classList.remove('active','done');
+    if(s===step) el.classList.add('active');
+    else if(s<step) el.classList.add('done');
+  });
+  if(step===3){
+    document.getElementById('txnId').textContent = Math.random().toString(36).substr(2,8).toUpperCase();
+    if(buyIdx>-1){
+      listings[buyIdx].soldStatus = true;
+      renderGrid(listings);
+    }
+  }
+}
+
+function selectPay(el,val){
+  document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  activePay = val;
+  document.getElementById('payFields').style.display = val==='kredi'?'block':'none';
+}
+
+// ── CHAT ──
+const SUGGESTIONS = [
+  ['Fiyat pazarlık yapılır mı?','Ne zaman görmeye gelebilirim?','Tapu masrafları kime ait?','Kaç yıllık bina?'],
+  ['Eşya dahil mi?','Depozito ne kadar?','Kiracı var mı şu an?','Isıtma nasıl?'],
+  ['Komşular nasıl?','Fotoğraf atabilir misiniz?','Tapu temiz mi?','Site aidatı ne kadar?']
+];
+
+const OWNER_REPLIES = {
+  'Fiyat pazarlık yapılır mı?': 'Makul teklifler için görüşebiliriz. Ciddi alıcılara esneklik gösteririz 🙂',
+  'Ne zaman görmeye gelebilirim?': 'Hafta içi her gün 10:00–19:00 arası müsaitim. Hangi gün uygun?',
+  'Tapu masrafları kime ait?': 'Tapu masrafları genellikle yarı yarıya paylaşılır, ancak görüşebiliriz.',
+  'Kaç yıllık bina?': 'Bina 8 yıllık, çelik konstrüksiyon, depreme dayanıklı.',
+  'Eşya dahil mi?': 'Beyaz eşyalar dahil, mobilyalar için anlaşabiliriz.',
+  'Depozito ne kadar?': '2 aylık kira depozito istiyoruz, makbuzunu veriyoruz.',
+  'Kiracı var mı şu an?': 'Şu an boş, hemen girebilirsiniz.',
+  'Isıtma nasıl?': 'Doğalgaz kombi, aylık ortalama 800-1200 TL geliyor.',
+  'Komşular nasıl?': 'Çok sakin bir site, ağırlıklı olarak aile yaşıyor.',
+  'Fotoğraf atabilir misiniz?': 'Tabii, size WhatsApp\'tan daha fazla fotoğraf gönderebilirim!',
+  'Tapu temiz mi?': 'Evet, tapu tamamen temiz, ipotek veya şerh yok.',
+  'Site aidatı ne kadar?': 'Aylık aidat 1.500 TL, havuz ve güvenlik dahil.'
+};
+
+function openChat(idx){
+  const h = listings[idx];
+  closeModal('detOvl');
+  setTimeout(()=>{
+    document.getElementById('chatAv').textContent = h.seller.icon;
+    document.getElementById('chatName').textContent = h.seller.name;
+    document.getElementById('chatProp').textContent = '📌 ' + h.title;
+    const msgsEl = document.getElementById('chatMsgs');
+    msgsEl.innerHTML = '';
+    h.chatMsgs.forEach(m=>appendMsg(m.who,m.text,false));
+    const sugs = SUGGESTIONS[idx % SUGGESTIONS.length];
+    document.getElementById('chatSugs').innerHTML = sugs.map(s=>`<button class="sug-btn" onclick="useSug('${s}')">${s}</button>`).join('');
+    document.getElementById('chatOvl').classList.add('open');
+    document.body.style.overflow='hidden';
+    currentDetIdx = idx;
+  },200);
+}
+
+function appendMsg(who, text, save=true){
+  const msgsEl = document.getElementById('chatMsgs');
+  const now = new Date();
+  const time = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  const div = document.createElement('div');
+  div.className = 'msg '+(who==='me'?'me':'them');
+  div.innerHTML = `<div class="msg-bubble">${text}</div><span class="msg-time">${time}</span>`;
+  msgsEl.appendChild(div);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  if(save && currentDetIdx>-1) listings[currentDetIdx].chatMsgs.push({who,text});
+}
+
+function sendMsg(){
+  const inp = document.getElementById('chatInput');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  appendMsg('me',txt);
+  inp.value='';
+  const reply = OWNER_REPLIES[txt] || 'Mesajınız için teşekkürler! En kısa sürede dönüş yapacağım 😊';
+  setTimeout(()=>{
+    appendMsg('them',reply);
+  }, 900 + Math.random()*600);
+}
+
+function useSug(txt){
+  document.getElementById('chatInput').value = txt;
+  sendMsg();
+}
+
+// ── ADD LISTING ──
+let addOdaVal = '2+1';
+function pickOda(el,val){
+  document.querySelectorAll('#addOdaPick button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  addOdaVal = val;
+}
+
+function openAddListing(){
+  document.getElementById('addOvl').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function submitListing(){
+  const title = document.getElementById('aTitle').value;
+  const fiyat = parseInt(document.getElementById('aFiyat').value.replace(/\D/g,''));
+  if(!title || !fiyat){showToast('⚠️ Lütfen başlık ve fiyat girin');return;}
+  const newH = {
+    id: Date.now(), title,
+    type: document.getElementById('aTip').value,
+    emlak: document.getElementById('aEmlak').value,
+    oda: addOdaVal,
+    m2: parseInt(document.getElementById('aM2').value)||80,
+    kat: document.getElementById('aKat').value||'?',
+    sehir: document.getElementById('aSehir').value,
+    ilce: document.getElementById('aIlce').value||'Merkez',
+    fiyat, badge:'Yeni',
+    icon: ICONS[Math.floor(Math.random()*ICONS.length)],
+    desc: document.getElementById('aDesc').value||'Detay bilgisi girilmemiş.',
+    feats:['Temiz','Bakımlı'],
+    seller:{name:'Siz',rating:'5.0',reviews:1,icon:'😊'},
+    soldStatus:false,
+    chatMsgs:[{who:'them',text:'Merhaba! İlanımla ilgili sorularınızı yanıtlayabilirim.'}]
+  };
+  listings.unshift(newH);
+  closeModal('addOvl');
+  renderGrid(listings);
+  showToast('✅ İlanınız başarıyla yayınlandı!');
+}
+
+// ── MODAL HELPERS ──
+function closeOvl(id,e){if(e.target===document.getElementById(id))closeModal(id);}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── INIT ──
+renderGrid(listings);
+</script>
+</body>
+</html>
